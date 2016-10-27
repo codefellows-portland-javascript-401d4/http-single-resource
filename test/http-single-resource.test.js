@@ -3,9 +3,16 @@ const assert = require('chai').assert;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const path = require('path');
+// const sander = require('sander');
 const test_server = require('../lib/HttpSingleResourceServer');
 const NoteStore = require('../lib/NoteStore');
 chai.use(chaiHttp);
+
+const testNotes = [
+  { noteBody: 'Test file 1.' },
+  { noteBody: 'Test file 2.' },
+  { noteBody: 'Test file 3.' }
+];
 
 describe ('NoteStore unit tests', () => {
 
@@ -14,12 +21,11 @@ describe ('NoteStore unit tests', () => {
 
   before(() => {
     notesDir = path.join(__dirname, '../notes');
-    console.log('notesDir ', notesDir);
     noteStore = new NoteStore(notesDir);
   });
 
-  it ('stores test note in a file', (done) => {
-    noteStore.store('testfile', { testBody: 'Test file.' })
+  it ('store() stores test note in a file', (done) => {
+    noteStore.store('testfile1', testNotes[0])
       .then(() => {
         assert(true);
         done();
@@ -29,72 +35,126 @@ describe ('NoteStore unit tests', () => {
       });
   });
 
-  it ('gets test note from a file', () => {
-
-  });
-  
-  after(() => {
-    
-  });
-
-});
-
-describe ('HTTP GET', function() {
-
-  let request = chai.request(test_server);
-
-  it('"/notes" returns all notes', (done) => {
-    request
-      .get('/notes')
-      .end((err, res) => {
-        expect(res.text).to.equal('all notes');
+  it ('get() gets test note from a file', (done) => {
+    noteStore.get('testfile1')
+      .then((data) => {
+        expect(data).to.deep.equal(testNotes[0]);
         done();
-      });
-  });
-
-  it('"/notes/:resourcename" returns that resource (note)', (done) => {
-    request
-      .get('/notes/testnote')
-      .end((err, res) => {
-        expect(res.body).to.deep.equal({ noteBody: 'Test note.' });
+      })
+      .catch((err) => {
         done(err);
       });
   });
 
-  it ('"/invalidpath" returns a 404 error', (done) => {
-    request
-      .get('/invalidpath')
-      .end((err, res) => {
-        expect(res).to.have.status(404);
-        done();
-      });
+
+  it ('gets an array of all notes with getAll()', (done) => {
+    Promise.all([
+      noteStore.store('testfile2', testNotes[1]),
+      noteStore.store('testfile3', testNotes[2])
+    ])
+    .then(() => {
+      return noteStore.getAll();
+    })
+    .then((arr) => {
+      let result = arr;
+      expect(result).to.deep.equal(testNotes);
+      done();
+    })
+    .catch((err) => {
+      // console.log('Got to the catch block ', err);
+      done(err);
+    });
+  });
+  
+  after(() => {
+    // sander.rimraf(notesDir);
   });
 
 });
 
-describe ('HTTP POST', function() {
+describe ('Server integration tests', function() {
 
-  it ('"/notes" with { noteBody: "Hello, world!" } stores that content in the store', (done) => {
-    assert.fail(null, null, 'Test not implemented yet.');
-    done();
+  let request = chai.request(test_server);
+
+  before((/*done*/) => {
+    // Promise.all([
+    //   noteStore.store('testfile 1', testNotes[0]),
+    //   noteStore.store('testfile 2', testNotes[1]),
+    //   noteStore.store('testfile 3', testNotes[2])
+    // ])
+    // .then(() => {
+    //   done();
+    // })
   });
 
-});
+  describe ('HTTP GET', () => {
 
-describe ('HTTP PUT', function() {
+    it('"/notes" returns all notes', (done) => {
+      request
+        .get('/notes')
+        .end((err, res) => {
+          expect(res.body).to.deep.equal(testNotes);
+          done(err);
+        });
+    });
 
-  it ('"/notes/:resourcename" with { noteBody: "This is new content." } stores that content in resourcename', (done) => {
-    assert.fail(null, null, 'Test not implemented yet.');
-    done();
+    it('"/notes/:resourcename" returns that resource (note)', (done) => {
+      request
+        .get('/notes/testfile1')
+        .end((err, res) => {
+          expect(res.body).to.deep.equal(testNotes[0]);
+          done(err);
+        });
+    });
+
+    it ('"/invalidpath" returns a 404 error', (done) => {
+      request
+        .get('/invalidpath')
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          done();
+        });
+    });
+
   });
 
-});
+  describe ('HTTP POST', () => {
 
-describe ('HTTP DELETE', function() {
+    it ('"/notes" with { id: "testfile4", noteBody: "Hello, world!" } stores that content in the store', (done) => {
+      request
+        .post('/notes')
+        .send({ id: 'testfile4', noteBody: 'Hello, world!' })
+        .end((err) => {
+          if (err) done(err);
+          request
+            .get('/notes/testfile4')
+            .end((err, res) => {
+              expect(res.body).to.deep.equal({ noteBody: 'Hello, world!' });
+              done(err);
+            });
+        });
+    });
 
-  it ('"/notes/:resourcename" removes resourcename from the store', (done) => {
-    assert.fail(null, null, 'Test not implemented yet.');
-    done();
   });
 
+  describe ('HTTP PUT', () => {
+
+    it ('"/notes/:resourcename" with { noteBody: "This is new content." } stores that content in resourcename', (done) => {
+      assert.fail(null, null, 'Test not implemented yet.');
+      done();
+    });
+
+  });
+
+  describe ('HTTP DELETE', () => {
+
+    it ('"/notes/:resourcename" removes resourcename from the store', (done) => {
+      assert.fail(null, null, 'Test not implemented yet.');
+      done();
+    });
+  });
+
+  after ((/*done*/) => {
+    // sander.rimraf()
+  });
 });
