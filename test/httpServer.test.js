@@ -77,22 +77,23 @@ describe('http single resource promise server', () => {
             .end((err, res) => {
                 if (err) return done(err);
                 else {
-                    console.log(res);
+                    // console.log(res);
                     assert.equal(res.text, 'post good');
                     done();
                 };
             });
     });
 
-    // it('wants to see if DELETE works', done => {
-    //     request
-    //         .del('/cat/felix')
-    //         .end((err, res) => {
-    //             if (err) return done(err);
-    //             else {
-    //                 done();
-    //             };
-    //         });
-    // });
+    it('wants to see if DELETE works', done => {
+        request
+            .del('/resources/carl')
+            .end((err, res) => {
+                if (err) return done(err);
+                else {
+                    assert.equal(res.text, 'Carl was deleted');
+                    done();
+                };
+            });
+    });
     
 });
