@@ -15,9 +15,9 @@ describe('http single resource promise server', () => {
         server.listen({port, port}, done);
     });
     
-    it('just console logs some stuff', () => {
-        console.log('some stuff');
-    });
+    // it('just console logs some stuff', () => {
+    //     console.log('some stuff');
+    // });
 
     it('wants to see if get works', done => {
         request
@@ -25,7 +25,7 @@ describe('http single resource promise server', () => {
             .end((err, res) => {
                 if (err) return done(err);
                 else {
-                    console.log(res.body);
+                    // console.log(res.body);
                     assert.deepEqual(res.body, {'id':'felix','age':19,'color':'black and white'});
                     done();
                 };
@@ -88,12 +88,25 @@ describe('http single resource promise server', () => {
         request
             .del('/resources/carl')
             .end((err, res) => {
+                console.log(res.text);
                 if (err) return done(err);
                 else {
                     assert.equal(res.text, 'Carl was deleted');
                     done();
-                };
+                }
             });
     });
-    
+   
+    it('returns an error if trying to DELETE a non-existent file', done => {
+        request
+            .del('/resources/non-existent-cat')
+            .end((err, res) => {
+                console.log(res.text);
+                if (err) return done(err);
+                else {
+                    assert.equal(res.text, 'No such file exists');
+                    done();
+                }
+            });
+    }); 
 });
