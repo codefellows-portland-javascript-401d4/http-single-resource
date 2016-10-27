@@ -40,7 +40,7 @@ describe('http single resource promise server', () => {
                 else {
                     // console.log(res);
                     //console.log('typeof',res);
-                    assert.deepEqual(res.text.split(','), ["cats", "felix", "nyan", "tardar"]);
+                    assert.deepEqual(res.text.split(','), ['cats', 'felix', 'nyan', 'tardar']);
                     done();
                 };
             });
@@ -69,16 +69,20 @@ describe('http single resource promise server', () => {
     //         });
     // });
 
-    // it('wants to see if POST works', done => {
-    //     request
-    //         .post('/cat/felix')
-    //         .end((err, res) => {
-    //             if (err) return done(err);
-    //             else {
-    //                 done();
-    //             };
-    //         });
-    // });
+    it('wants to see if POST works', done => {
+        request
+            .post('/cats')
+            .set('Content-Type', 'application/json')
+            .send('{"id":"carl","age":10,"color":"gray"}')
+            .end((err, res) => {
+                if (err) return done(err);
+                else {
+                    console.log(res);
+                    assert.equal(res.text, 'post good');
+                    done();
+                };
+            });
+    });
 
     // it('wants to see if DELETE works', done => {
     //     request
