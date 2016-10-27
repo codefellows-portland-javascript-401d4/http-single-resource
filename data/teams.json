@@ -1,0 +1,10 @@
+{"teams": [
+		{
+			"name":"Athletics", 
+			"city":"Oakland"
+		},
+		{
+			"name":"Cubs", 
+			"city":"Chicago"
+		}
+] }
