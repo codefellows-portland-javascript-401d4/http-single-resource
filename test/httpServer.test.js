@@ -25,6 +25,7 @@ describe('http single resource promise server', () => {
             .end((err, res) => {
                 if (err) return done(err);
                 else {
+                    console.log(res.body);
                     assert.deepEqual(res.body, {'id':'felix','age':19,'color':'black and white'});
                     done();
                 };
@@ -39,7 +40,7 @@ describe('http single resource promise server', () => {
                 else {
                     // console.log(res);
                     //console.log('typeof',res);
-                    assert.deepEqual(res.body, [{'id': 'felix','age': 19,'color': 'black and white'}, {'id': 'nyan','age': 5,'color': 'gray and poptart'}, {'id': 'tardar','age': 6,'color': 'white and gray'}]);
+                    assert.deepEqual(res.text.split(','), ["cats", "felix", "nyan", "tardar"]);
                     done();
                 };
             });
