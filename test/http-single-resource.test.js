@@ -69,25 +69,35 @@ describe ('NoteStore unit tests', () => {
     });
   });
   
-  after(() => {
-    sander.rimraf(notesDir);
+  after((done) => {
+    sander.rimraf(notesDir)
+      .then(done);
   });
 
 });
 
 describe ('Server integration tests', function() {
 
+  let notesDir;
+  let noteStore;
   let request = chai.request(test_server);
 
-  before((/*done*/) => {
-    // Promise.all([
-    //   noteStore.store('testfile 1', testNotes[0]),
-    //   noteStore.store('testfile 2', testNotes[1]),
-    //   noteStore.store('testfile 3', testNotes[2])
-    // ])
-    // .then(() => {
-    //   done();
-    // })
+  before((done) => {
+    notesDir = path.join(__dirname, '../notes');
+    if (!sander.existsSync(notesDir)) {
+      sander.mkdirSync(notesDir);
+    }
+
+    noteStore = new NoteStore(notesDir);
+
+    Promise.all([
+      noteStore.store('testfile 1', testNotes[0]),
+      noteStore.store('testfile 2', testNotes[1]),
+      noteStore.store('testfile 3', testNotes[2])
+    ])
+    .then(() => {
+      done();
+    });
   });
 
   describe ('HTTP GET', () => {
@@ -157,7 +167,8 @@ describe ('Server integration tests', function() {
     });
   });
 
-  after ((/*done*/) => {
-    // sander.rimraf()
+  after ((done) => {
+    sander.rimraf(notesDir)
+      .then(done);
   });
 });
