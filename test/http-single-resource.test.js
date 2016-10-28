@@ -3,7 +3,7 @@ const assert = require('chai').assert;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const path = require('path');
-// const sander = require('sander');
+const sander = require('sander');
 const test_server = require('../lib/HttpSingleResourceServer');
 const NoteStore = require('../lib/NoteStore');
 chai.use(chaiHttp);
@@ -21,6 +21,9 @@ describe ('NoteStore unit tests', () => {
 
   before(() => {
     notesDir = path.join(__dirname, '../notes');
+    if (!sander.existsSync(notesDir)) {
+      sander.mkdirSync(notesDir);
+    }
     noteStore = new NoteStore(notesDir);
   });
 
@@ -67,7 +70,7 @@ describe ('NoteStore unit tests', () => {
   });
   
   after(() => {
-    // sander.rimraf(notesDir);
+    sander.rimraf(notesDir);
   });
 
 });
