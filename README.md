@@ -6,7 +6,7 @@ This HTTP server performs CRUD operations on notes.
 
 ## Motivation
 
-This was written as a lab assignment for Code Fellows 401 class. Currently it supports paletted and non-paletted bitmaps in the standard Windows NT/3.1+ BITMAPINFOHEADER format.
+This was written as a lab assignment for Code Fellows 401 class.
 
 ## API Reference
 
