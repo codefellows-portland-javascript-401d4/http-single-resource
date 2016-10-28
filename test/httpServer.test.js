@@ -58,19 +58,19 @@ describe('http single resource promise server', () => {
     //         });
     // });
 
-    it('wants to see if PUT works', done => {
-        request
-            .put('/resources/0')
-            .set('Content-Type', 'application/json')
-            .send('{"id":"felix","age":8,"color":"orange"}')
-            .end((err, res) => {
-                if (err) return done(err);
-                else {
-                    assert.equal(res.text, 'put is done')
-                    done();
-                }
-            });
-    });
+    // it('wants to see if PUT works', done => {
+    //     request
+    //         .put('/resources/0')
+    //         .set('Content-Type', 'application/json')
+    //         .send('{"id":"felix","age":8,"color":"orange"}')
+    //         .end((err, res) => {
+    //             if (err) return done(err);
+    //             else {
+    //                 assert.equal(res.text, 'put is done')
+    //                 done();
+    //             }
+    //         });
+    // });
 
     it('wants to see if POST works', done => {
         request
@@ -92,7 +92,7 @@ describe('http single resource promise server', () => {
             .end((err, res) => {
                 if (err) return done(err);
                 else {
-                    assert.equal(res.text, 'Carl was deleted');
+                    assert.equal(res.text, 'File was deleted');
                     done();
                 }
             });
