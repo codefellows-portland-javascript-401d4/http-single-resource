@@ -15,10 +15,7 @@ describe('testing server.js', () =>{
         });
     });
 
-    it('should bring up a single file', done => {
-        request.get('/')
-    })
-
-
-
+    // it('should bring up a single file', done => {
+    //     request.get('/')
+    // })
 });
