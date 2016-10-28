@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 describe('Our server responds to requests', done => {
 
   let locHost = 'http://localhost:8080';
-  let testTeam1 = {"teamName": "EHOME","teamMembers": "['test1', 'new chicken', 'RTZ', 'LaNm', 'Garder']","region": "CN","tiWinner": "false"}
+  let testTeam1 = {"teamName":"Natus Vincere","teamMembers":["Ditya Ra","Dendi","GeneRaL","SoNNeikO","Artstyle"],"region":"EU","tiWinner":true,"id":1};
 
   before(done => {
     rimraf('./lib/dotaTeams/*', err => {
@@ -17,23 +17,42 @@ describe('Our server responds to requests', done => {
     });
   });
 
-  it('should make a file from a POST request', done => {
-    chai.request(locHost)
+  it('Should make a file from a POST request', () => {
+    return chai.request(locHost)
       .post('/teams')
       .send(testTeam1)
       .then(res => {
         assert.equal(res.statusCode, 200);
-        assert.equal(res.text, testTeam1);
-        done();
+        assert.deepEqual(res.body, testTeam1);
       })
       .catch(err => {
-        console.log('POST test 1 err');
+        console.log('POST test err');
         throw err;
       });
   });
 
-  it('Should do this other thing', function() {
+  it('Should retrieve a single file from a GET request', () => {
+    return chai.request(locHost)
+      .get('/teams/1')
+      .then(res => {
+        assert.deepEqual(res.body, testTeam1);
+      })
+      .catch(err => {
+        console.log('GET test err');
+        throw err;
+      });
+  });
 
+  it('Should retrieve all files from GET request to /teams', () => {
+    return chai.request(locHost)
+      .get('/teams')
+      .then(res => {
+        assert.isArray(res.body);
+      })
+      .catch(err => {
+        console.log('GET all test err');
+        throw err;
+      });
   });
 
 });
