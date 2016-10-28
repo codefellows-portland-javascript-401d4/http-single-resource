@@ -1,4 +1,3 @@
-const http = require('http');
 const server = require('./lib/HttpSingleResourceServer');
 
 let port = process.argv[2] || 3000;
