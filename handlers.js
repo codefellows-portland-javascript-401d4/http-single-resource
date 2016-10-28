@@ -28,7 +28,7 @@ handlers.getSingle = (req, res, id) => {
   fileStore.getFile('/' + id)
     .then(team => {
       res.writeHead(200, {
-        'Content-Type': 'text/plain'
+        'Content-Type': 'application/json'
       });
       res.end(team);
     }).catch(err => {
@@ -91,7 +91,7 @@ handlers.destroy = (req, res, id) => {
   fileStore.destroy(id)
     .then( () => {
       res.writeHead(200, {
-        'Content-Type': 'application/json' 
+        'Content-Type': 'text/plain' 
       });
       res.write(id + ' resource was deleted.');
       res.end();
