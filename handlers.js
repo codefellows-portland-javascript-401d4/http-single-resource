@@ -9,10 +9,11 @@ handlers.post = (req, res) => {
       console.log('body-reader POST-handler err');
       res.end(err.message);
     } else {
-      res.writeHead(200, {
-        'Content-Type': 'application/json' 
-      });
       fileStore.createFile(team).then(data => {
+        console.log('filestore.createfile: ', data);
+        res.writeHead(200, {
+          'Content-Type': 'application/json' 
+        });
         res.write(data);
         res.end();
       })
