@@ -14,63 +14,56 @@ describe('http single resource promise server', () => {
     before(done => {
         server.listen({port, port}, done);
     });
-    
-    // it('just console logs some stuff', () => {
-    //     console.log('some stuff');
-    // });
 
-    it('wants to see if get works', done => {
+    it('checks to see that we can retrieve a given cat', done => {
         request
-            .get('/cats/0')
+            .get('/cats/1')
             .end((err, res) => {
                 if (err) return done(err);
                 else {
-                    // console.log(res.body);
-                    assert.deepEqual(res.body, {'id':'felix','age':19,'color':'black and white'});
+                    assert.deepEqual(res.body, {'id':'nyan','age':5,'color':'gray and poptart'});
                     done();
                 };
             });
     });
 
-    it('wants to see if get works', done => {
+    it('wants to see if we get a list of all resources', done => {
         request
             .get('/cats')
             .end((err, res) => {
                 if (err) return done(err);
                 else {
-                    // console.log(res);
-                    //console.log('typeof',res);
                     assert.deepEqual(res.text.split(','), ['0.json', '1.json', '2.json']);
                     done();
                 };
             });
     });
 
-    // it('wants to check sander data', done => {
-    //     sander
-    //         .readFile('./resources/cats.json', {encoding: 'utf-8'})
-    //         .then(data => {
-    //             console.log(data);
-    //             done();
-    //         })
-    //         .catch(err => {
-    //             done(err);
-    //         });
-    // });
+    it('wants to see if PUT will update a given file', done => {
+        request
+            .put('/cats/0')
+            .set('Content-Type', 'application/json')
+            .send('{"id":"felix","age":8,"color":"orange"}')
+            .end((err, res) => {
+                if (err) return done(err);
+                else {
+                    assert.equal(res.text, 'put good');
+                    done();
+                }
+            });
+    });
 
-    // it('wants to see if PUT works', done => {
-    //     request
-    //         .put('/resources/0')
-    //         .set('Content-Type', 'application/json')
-    //         .send('{"id":"felix","age":8,"color":"orange"}')
-    //         .end((err, res) => {
-    //             if (err) return done(err);
-    //             else {
-    //                 assert.equal(res.text, 'put is done')
-    //                 done();
-    //             }
-    //         });
-    // });
+    it('checks to see that the last file was updated during PUT operation', done => {
+        request
+            .get('/cats/0')
+            .end((err, res) => {
+                if (err) return done(err);
+                else {
+                    assert.deepEqual(res.body, {'id':'felix','age':8,'color':'orange'});
+                    done();
+                };
+            });
+    });
 
     it('wants to see if POST works', done => {
         request
@@ -86,9 +79,35 @@ describe('http single resource promise server', () => {
             });
     });
 
-    it('wants to see if DELETE works', done => {
+    it('wants to see if PUT will act like POST if file is not present', done => {
         request
-            .del('/resources/3')
+            .put('/cats/8')
+            .set('Content-Type', 'application/json')
+            .send('{"id":"felix","age":8,"color":"orange"}')
+            .end((err, res) => {
+                if (err) return done(err);
+                else {
+                    assert.equal(res.text, 'put good');
+                    done();
+                }
+            });
+    });
+
+    it('wants to see if DELETE will delete the last thing we PUT in', done => {
+        request
+            .del('/cats/8')
+            .end((err, res) => {
+                if (err) return done(err);
+                else {
+                    assert.equal(res.text, 'File was deleted');
+                    done();
+                }
+            });
+    });
+
+    it('wants to see if DELETE works on what we POSTED', done => {
+        request
+            .del('/cats/3')
             .end((err, res) => {
                 if (err) return done(err);
                 else {
@@ -100,7 +119,7 @@ describe('http single resource promise server', () => {
    
     it('returns an error if trying to DELETE a non-existent file', done => {
         request
-            .del('/resources/non-existent-cat')
+            .del('/cats/non-existent-cat')
             .end((err, res) => {
                 if (err) return done(err);
                 else {
