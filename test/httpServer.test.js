@@ -60,13 +60,15 @@ describe('http single resource promise server', () => {
 
     it('wants to see if PUT works', done => {
         request
-            .put('/cat/0')
-            .send('{"id":"carl","age":10,"color":"gray"}')
+            .put('/resources/0')
+            .set('Content-Type', 'application/json')
+            .send('{"id":"felix","age":8,"color":"orange"}')
             .end((err, res) => {
                 if (err) return done(err);
                 else {
+                    assert.equal(res.text, 'put is done')
                     done();
-                };
+                }
             });
     });
 
@@ -78,31 +80,28 @@ describe('http single resource promise server', () => {
             .end((err, res) => {
                 if (err) return done(err);
                 else {
-                    // console.log(res);
                     assert.equal(res.text, 'post good');
                     done();
                 };
             });
     });
 
-    // it('wants to see if DELETE works', done => {
-    //     request
-    //         .del('/resources/carl')
-    //         .end((err, res) => {
-    //             console.log(res.text);
-    //             if (err) return done(err);
-    //             else {
-    //                 assert.equal(res.text, 'Carl was deleted');
-    //                 done();
-    //             }
-    //         });
-    // });
+    it('wants to see if DELETE works', done => {
+        request
+            .del('/resources/3')
+            .end((err, res) => {
+                if (err) return done(err);
+                else {
+                    assert.equal(res.text, 'Carl was deleted');
+                    done();
+                }
+            });
+    });
    
     it('returns an error if trying to DELETE a non-existent file', done => {
         request
             .del('/resources/non-existent-cat')
             .end((err, res) => {
-                console.log(res.text);
                 if (err) return done(err);
                 else {
                     assert.equal(res.text, 'No such file exists');
