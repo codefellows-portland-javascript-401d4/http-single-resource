@@ -91,9 +91,9 @@ describe ('Server integration tests', function() {
     noteStore = new NoteStore(notesDir);
 
     Promise.all([
-      noteStore.store('testfile 1', testNotes[0]),
-      noteStore.store('testfile 2', testNotes[1]),
-      noteStore.store('testfile 3', testNotes[2])
+      noteStore.store('testfile1', testNotes[0]),
+      noteStore.store('testfile2', testNotes[1]),
+      noteStore.store('testfile3', testNotes[2])
     ])
     .then(() => {
       done();
@@ -102,7 +102,7 @@ describe ('Server integration tests', function() {
 
   describe ('HTTP GET', () => {
 
-    it('"/notes" returns all notes', (done) => {
+    it ('"/notes" returns all notes', (done) => {
       request
         .get('/notes')
         .end((err, res) => {
@@ -111,7 +111,7 @@ describe ('Server integration tests', function() {
         });
     });
 
-    it('"/notes/:resourcename" returns that resource (note)', (done) => {
+    it ('"/notes/:resourcename" returns that resource (note)', (done) => {
       request
         .get('/notes/testfile1')
         .end((err, res) => {
