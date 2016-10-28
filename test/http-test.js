@@ -56,18 +56,18 @@ describe('Our server responds to requests', done => {
       });
   });
 
-  // it('Should update a file from a PUT request', () => {
-  //   return chai.request(locHost)
-  //     .put('/teams/1')
-  //     .send({"teamName": "Navi"})
-  //     .then(res => {
-  //       assert.deepEqual(res.body, {"teamName":"Navi", "id":"1"});
-  //     })
-  //     .catch(err => {
-  //       console.log('PUT test err');
-  //       throw err;
-  //     });
-  // });
+  it('Should update a file from a PUT request', () => {
+    return chai.request(locHost)
+      .put('/teams/1')
+      .send({"teamName": "Navi"})
+      .then(res => {
+        assert.deepEqual(res.body, {"teamName":"Navi", "id":"1"});
+      })
+      .catch(err => {
+        console.log('PUT test err');
+        throw err;
+      });
+  });
 
   it('Should delete a file from a DELETE request', () => {
     return chai.request(locHost)
