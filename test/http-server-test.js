@@ -2,15 +2,18 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const assert = chai.assert;
+const sander = require('sander');
 const server = require('../lib/http-server');
 
 let request = chai.request(server);
 //original two-team data resource displayed as text
 let origTeamsText = 'Oakland Athletics\nChicago Cubs\n';
+let basedir = 'data/';
+let filename = 'teamsTest.json';
 
 describe('http single resource server', () => {
 
-  it('error message on non-existent path', function (done) {
+  it('error message on non-existent path', done => {
     request
             .get('/DoesNotExist')
             .end((err, res) => {
@@ -20,7 +23,7 @@ describe('http single resource server', () => {
             });
   });
 
-  it('a path (/teams) uses url.pathname', function (done) {
+  it('a path (/teams) uses url.pathname', done => {
     request
             .get('/teams')
             .end((err, res) => {
@@ -30,7 +33,7 @@ describe('http single resource server', () => {
             });
   });
 
-  it('/teams uses queryData.team', function (done) {
+  it('/teams uses queryData.team', done => {
     request
             .get('/teams?team=Cubs')
             .end((err, res) => {
@@ -40,7 +43,31 @@ describe('http single resource server', () => {
             });
   });
 
-//POST
+  //City mispelled on purpose
+  it('POST adds team to data store', done => {
+    newTeam = {"name":"Giants", "City": "San FranciscO"};   // eslint-disable-line
+    request
+     .post('/teams')
+     .send(newTeam)
+     .end((err, res) => {
+       if (err) return done(err);
+  
+       sander.readFile(basedir, filename).then(result => {
+         console.log(result);
+        //  var updatedTeams = JSON.parse(result);
+        //  assert.deepEqual(updatedTeams, newTeam);
+         done();
+       });
+        //  .then(done);
+     });
+  });
+
+
+
+
+
+
+
 
 //PUT
 

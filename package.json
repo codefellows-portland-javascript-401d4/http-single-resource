@@ -4,11 +4,9 @@
   "description": "Code Fellows Assignment 2016-10-27",
   "main": "index.js",
   "scripts": {
-    "pretest": "npm run lint",
     "test": "npm run test:run",
     "test:run": "mocha",
-    "test:watch": "npm run test:run -- -w",
-    "lint": "eslint ."
+    "test:watch": "npm run test:run -- -w"
   },
   "repository": {
     "type": "git",
