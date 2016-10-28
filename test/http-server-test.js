@@ -4,6 +4,7 @@ chai.use(chaiHttp);
 const assert = chai.assert;
 const sander = require('sander');
 const server = require('../lib/http-server');
+const fs = require('fs');
 
 let request = chai.request(server);
 //original two-team data resource displayed as text
@@ -44,29 +45,23 @@ describe('http single resource server', () => {
   });
 
   //City mispelled on purpose
-  it('POST adds team to data store', done => {
-    newTeam = {"name":"Giants", "City": "San FranciscO"};   // eslint-disable-line
+  it('POST adds team to data store; confirm by checking that /teams page updates', done => {
+    newTeam = {"name":"Giants", "city": "San Frcisco"};   // eslint-disable-line
     request
      .post('/teams')
      .send(newTeam)
      .end((err, res) => {
        if (err) return done(err);
-  
-       sander.readFile(basedir, filename).then(result => {
-         console.log(result);
-        //  var updatedTeams = JSON.parse(result);
-        //  assert.deepEqual(updatedTeams, newTeam);
-         done();
-       });
-        //  .then(done);
-     });
-  });
-
-
-
-
-
-
+       request
+            .get('/teams')
+            .end((err, res) => {
+              if (err) return done(err);
+              assert.equal(res.text, origTeamsText + 'San Frcisco Giants\n');
+              done();
+            });
+     }); 
+  });   
+ 
 
 
 //PUT
