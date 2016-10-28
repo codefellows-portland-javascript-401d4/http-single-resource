@@ -1,3 +1,4 @@
+//check that teams.json = teamsOriginal.json before testing (it will be so after testing)
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
@@ -10,7 +11,7 @@ let origTeamsText = 'Oakland Athletics\nChicago Cubs\n';
 let basedir = 'data/';
 let filename = 'teamsTest.json';
 
-describe('GET tests', () => {
+describe('Six tests for single-resource http server', () => {
 
   it('error message on non-existent path', done => {
     request
@@ -41,12 +42,9 @@ describe('GET tests', () => {
               done();
             });
   });
-});
-
-describe('POST test', () => {
 
   //City mispelled on purpose for next test purposes
-  it('adds team to data store; confirm by checking that /teams page updates', done => {
+  it('POST - adds team to data store; confirm by checking that /teams page updates', done => {
     newTeam = {"name":"Giants", "city": "San Frcisco"};   // eslint-disable-line
     request
      .post('/teams')
@@ -62,10 +60,8 @@ describe('POST test', () => {
             });
      }); 
   });
-});   
 
-describe('PUT test', () => { 
-  it('edits team city in data store; confirm by checking that /teams page updates', done => {
+  it('PUT - edits team city in data store; confirm by checking that /teams page updates', done => {
     editTeam = {"name":"Giants", "city": "San Francisco"};   // eslint-disable-line
     request
      .put('/teams?team=Giants')
@@ -80,11 +76,9 @@ describe('PUT test', () => {
               done();
             });
      }); 
-  });
-});   
+  });   
 
-describe('DELETE test', () => { 
-  it('removes team from data store; confirm by checking that /teams page updates', done => {
+  it('DELETE - removes team from data store; confirm by checking that /teams page updates', done => {
     delTeam = {"name":"Giants", "city": "San Francisco"};   // eslint-disable-line
     request
      .delete('/teams?team=Giants')
@@ -100,7 +94,5 @@ describe('DELETE test', () => {
             });
      }); 
   });
-});    
 
-//teams.json has returned to original state (which is also 'memoralized' in teamsOriginal.json)
-
+});

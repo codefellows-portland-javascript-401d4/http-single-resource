@@ -1,11 +1,16 @@
-TransformNPBMP simply inverts the colors of any 24-bit .bmp file.
+http-single-resource is a representation of a simple two-page website served by a single data resource (SDR) where the /teams page features a variety of GET, POST, and DELETE functionality.
+
+It GETs a list of all teams on entry or only a single team if queried by team from the SDR.
+
+It POSTs new teams to the SDR.
+
+It PUTs revisions to the city of an existing team to the SDR.
+
+It DELETEs a team's entry from the SDR.
 	
-Its only requirement is node's fs command set.
+It requires http, parseUrl, fs, and qs from node, the sander module, and a bodyReader module lifted from my Code Fellows 401 class.
 
-Simply feed it the full file name for the .bmp (e.g. 'data/blah-blah.bmp') ('buffer')' and it will color-invert
-and write a new 'trans'-prefixed version of the file.
-
-There is a Mocha/Chai/eslint test for this process in the 'test' folder.
+There is a Mocha/Chai (with http add-in)/eslint test for this process in the 'test' folder.
 
 ISC License (ISC)
 Copyright (c) 2016, Gregory N. Katchmar <gunk55@msn.com>
