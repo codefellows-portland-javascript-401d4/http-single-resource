@@ -47,7 +47,7 @@ describe('http single resource promise server', () => {
             .end((err, res) => {
                 if (err) return done(err);
                 else {
-                    assert.equal(res.text, 'put good');
+                    assert.equal(res.text, 'put good, your resource id is 0');
                     done();
                 }
             });
@@ -73,7 +73,7 @@ describe('http single resource promise server', () => {
             .end((err, res) => {
                 if (err) return done(err);
                 else {
-                    assert.equal(res.text, 'post good');
+                    assert.equal(res.text, 'post good, your resource id is 3');
                     done();
                 };
             });
@@ -87,7 +87,7 @@ describe('http single resource promise server', () => {
             .end((err, res) => {
                 if (err) return done(err);
                 else {
-                    assert.equal(res.text, 'put good');
+                    assert.equal(res.text, 'put good, your resource id is 8');
                     done();
                 }
             });
