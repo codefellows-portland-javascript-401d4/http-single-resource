@@ -1,0 +1,13 @@
+[{
+	"id": "felix",
+	"age": 19,
+	"color": "black and white"
+}, {
+	"id": "nyan",
+	"age": 5,
+	"color": "gray and poptart"
+}, {
+	"id": "tardar",
+	"age": 6,
+	"color": "white and gray"
+}]
