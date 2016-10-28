@@ -9,9 +9,9 @@ const NoteStore = require('../lib/NoteStore');
 chai.use(chaiHttp);
 
 const testNotes = [
-  { noteBody: 'Test file 1.' },
-  { noteBody: 'Test file 2.' },
-  { noteBody: 'Test file 3.' }
+  { id: 'testfile1', noteBody: 'Test file 1.' },
+  { id: 'testfile2', noteBody: 'Test file 2.' },
+  { id: 'testfile3', noteBody: 'Test file 3.' }
 ];
 
 describe ('NoteStore unit tests', () => {
@@ -28,9 +28,9 @@ describe ('NoteStore unit tests', () => {
   });
 
   it ('store() stores test note in a file', (done) => {
-    noteStore.store('testfile1', testNotes[0])
-      .then(() => {
-        assert(true);
+    noteStore.store(testNotes[0])
+      .then((retval) => {
+        expect(retval).to.equal(testNotes[0].id);
         done();
       })
       .catch((err) => {
@@ -52,8 +52,8 @@ describe ('NoteStore unit tests', () => {
 
   it ('gets an array of all notes with getAll()', (done) => {
     Promise.all([
-      noteStore.store('testfile2', testNotes[1]),
-      noteStore.store('testfile3', testNotes[2])
+      noteStore.store(testNotes[1]),
+      noteStore.store(testNotes[2])
     ])
     .then(() => {
       return noteStore.getAll();
