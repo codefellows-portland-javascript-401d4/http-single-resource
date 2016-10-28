@@ -102,8 +102,9 @@ describe ('Server integration tests', function() {
           request
             .get(`/notes/${testNotes[2].id}`)
             .end((err, res) => {
+              if (err) done(err);
               expect(res.body).to.deep.equal({ id: 'testfile3', noteBody: 'This is new content.' });
-              done(err);
+              done();
             });
         });
     });
@@ -117,14 +118,18 @@ describe ('Server integration tests', function() {
         .del(`/notes/${testNotes[3].id}`)
         .end((err, res) => {
           expect(res.text).to.equal(`Deleted note ${testNotes[3].id}`);
-          request
-            .get(`/notes/${testNotes[3].id}`)
-            .end((err, res) => {
-              expect(res).to.have.status(404);
-              done(err);
-            });
+          done(err);
         });
     });
+
+    // it ('removed resource is really gone', (done) => {
+    //   request
+    //     .get(`/notes/${testNotes[3].id}`)
+    //     .end((err, res) => {
+    //       expect(res).to.have.status(404);
+    //       done(err);
+    //     });
+    // });
   });
 
   after ((done) => {

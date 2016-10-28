@@ -64,7 +64,6 @@ describe ('NoteStore unit tests', () => {
       done();
     })
     .catch((err) => {
-      // console.log('Got to the catch block ', err);
       done(err);
     });
   });
