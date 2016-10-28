@@ -6,7 +6,7 @@ handlers.post = (req, res) => {
   return bodyReader(req, (err, team) => {
     if(err) {
       res.statusCode = 400;
-      console.log('POST 400 error');
+      console.log('body-reader POST-handler err');
       res.end(err.message);
     } else {
       res.writeHead(200, {
@@ -52,6 +52,33 @@ handlers.getAll = (req, res) => {
       res.end(err);
     });
 };
+
+handlers.replace = (req, res, id) => {
+  return bodyReader(req, (err, team) => {
+    if (err) {
+      console.log('body-reader replace-handler err')
+      res.statusCode = 400;
+      res.end(err.message);
+    } else {
+      fileStore.updateFile(team, id)
+        .then(data => {
+          res.writeHead(200, {
+                'Content-Type': 'application/json' 
+          });
+          res.write(data);
+          res.end();
+        })
+        .catch(err => {
+          console.log('replace catch err');
+          res.end(err);
+        });
+    }
+  });
+};
+
+// handlers.destroy = (req, res, id) => {
+
+// };
 
 handlers.notFound = res => {
   res.statusCode = 404;
