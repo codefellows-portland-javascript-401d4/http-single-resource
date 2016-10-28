@@ -58,16 +58,17 @@ describe('http single resource promise server', () => {
     //         });
     // });
 
-    // it('wants to see if PUT works', done => {
-    //     request
-    //         .put('/cat/felix')
-    //         .end((err, res) => {
-    //             if (err) return done(err);
-    //             else {
-    //                 done();
-    //             };
-    //         });
-    // });
+    it('wants to see if PUT works', done => {
+        request
+            .put('/cat/0')
+            .send('{"id":"carl","age":10,"color":"gray"}')
+            .end((err, res) => {
+                if (err) return done(err);
+                else {
+                    done();
+                };
+            });
+    });
 
     it('wants to see if POST works', done => {
         request
@@ -84,18 +85,18 @@ describe('http single resource promise server', () => {
             });
     });
 
-    it('wants to see if DELETE works', done => {
-        request
-            .del('/resources/carl')
-            .end((err, res) => {
-                console.log(res.text);
-                if (err) return done(err);
-                else {
-                    assert.equal(res.text, 'Carl was deleted');
-                    done();
-                }
-            });
-    });
+    // it('wants to see if DELETE works', done => {
+    //     request
+    //         .del('/resources/carl')
+    //         .end((err, res) => {
+    //             console.log(res.text);
+    //             if (err) return done(err);
+    //             else {
+    //                 assert.equal(res.text, 'Carl was deleted');
+    //                 done();
+    //             }
+    //         });
+    // });
    
     it('returns an error if trying to DELETE a non-existent file', done => {
         request
