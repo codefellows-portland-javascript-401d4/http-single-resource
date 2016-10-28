@@ -20,7 +20,7 @@ describe('http single resource server', () => {
             });
   });
 
-  it('a path (/teams) correctly uses url.pathname', function (done) {
+  it('a path (/teams) uses url.pathname', function (done) {
     request
             .get('/teams')
             .end((err, res) => {
@@ -30,7 +30,7 @@ describe('http single resource server', () => {
             });
   });
 
-  it('/teams correctly uses queryData.team', function (done) {
+  it('/teams uses queryData.team', function (done) {
     request
             .get('/teams?team=Cubs')
             .end((err, res) => {
@@ -39,5 +39,13 @@ describe('http single resource server', () => {
               done();
             });
   });
+
+//POST
+
+//PUT
+
+//DELETE
+
+
 
 });
