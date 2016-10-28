@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const assert = require('chai').assert;
+// const assert = require('chai').assert;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const path = require('path');
@@ -11,7 +11,8 @@ chai.use(chaiHttp);
 const testNotes = [
   { id: 'testfile1', noteBody: 'Test file 1.' },
   { id: 'testfile2', noteBody: 'Test file 2.' },
-  { id: 'testfile3', noteBody: 'Test file 3.' }
+  { id: 'testfile3', noteBody: 'Test file 3.' },
+  { id: 'testfile4', noteBody: 'Hello, world!' }
 ];
 
 describe ('Server integration tests', function() {
@@ -44,7 +45,7 @@ describe ('Server integration tests', function() {
       request
         .get('/notes')
         .end((err, res) => {
-          expect(res.body).to.deep.equal(testNotes);
+          expect(res.body).to.deep.equal(testNotes.slice(0,3));
           done(err);
         });
     });
@@ -71,17 +72,17 @@ describe ('Server integration tests', function() {
 
   describe ('HTTP POST', () => {
 
-    const testmessage4 = { id: 'testfile4', noteBody: 'Hello, world!' };
-    it (`"/notes" with ${JSON.stringify(testmessage4)} stores that content in the store`, (done) => {
+    // const testmessage4 = { id: 'testfile4', noteBody: 'Hello, world!' };
+    it (`"/notes" with ${JSON.stringify(testNotes[3])} stores that content in the store`, (done) => {
       request
         .post('/notes')
-        .send(testmessage4)
+        .send(testNotes[3])
         .end((err) => {
           if (err) done(err);
           request
-            .get(`/notes/${testmessage4.id}`)
+            .get(`/notes/${testNotes[3].id}`)
             .end((err, res) => {
-              expect(res.body).to.deep.equal(testmessage4);
+              expect(res.body).to.deep.equal(testNotes[3]);
               done(err);
             });
         });
@@ -92,8 +93,19 @@ describe ('Server integration tests', function() {
   describe ('HTTP PUT', () => {
 
     it ('"/notes/:resourcename" with { noteBody: "This is new content." } stores that content in resourcename', (done) => {
-      assert.fail(null, null, 'Test not implemented yet.');
-      done();
+      request
+        .put(`/notes/${testNotes[2].id}`)
+        .send({ noteBody: 'This is new content.' })
+        .end((err, res) => {
+          if (err) done(err);
+          expect(res.text).to.equal(`Stored note as ${testNotes[2].id}`);
+          request
+            .get(`/notes/${testNotes[2].id}`)
+            .end((err, res) => {
+              expect(res.body).to.deep.equal({ id: 'testfile3', noteBody: 'This is new content.' });
+              done(err);
+            });
+        });
     });
 
   });
@@ -101,8 +113,17 @@ describe ('Server integration tests', function() {
   describe ('HTTP DELETE', () => {
 
     it ('"/notes/:resourcename" removes resourcename from the store', (done) => {
-      assert.fail(null, null, 'Test not implemented yet.');
-      done();
+      request
+        .del(`/notes/${testNotes[3].id}`)
+        .end((err, res) => {
+          expect(res.text).to.equal(`Deleted note ${testNotes[3].id}`);
+          request
+            .get(`/notes/${testNotes[3].id}`)
+            .end((err, res) => {
+              expect(res).to.have.status(404);
+              done(err);
+            });
+        });
     });
   });
 
