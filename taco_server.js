@@ -1,35 +1,55 @@
-const sander = require('sander');
 const http = require('http');
-const Stream = require('stream');
-
-
-
-function getList(dir) {
-    sander.readdir(dir).then(function(data) {
-        console.log(data);
-    });
-}
-
-function getFile(file) {
-    sander.readFile(file).then(function(data) {
-        console.log(data);
-    });
-}
+const TacoStore = require('./taco_store');
+const tacoStore = new TacoStore;
+// const Stream = require('stream');
+// const bodyReader = require('./body_reader');
 
 
 const server = http.createServer(function (request, response) {
     console.log(request.method);
 
     if (request.url === '/tacos') {
-        getList('tacos');
-        // response.write();
-    } else if (request.url === '/tacos/carnitas') {
-        getFile('tacos/carnitas.json');
-        console.log('is response stream?', response instanceof Stream);
+        tacoStore.getList('tacos').then(data => {
+            console.log(data);
+            response.setHeader('Content-Type', 'text/html; charset=utf-8');
+            response.statusCode = 200;
+            for (var i=0; i < data.length; i++) {
+                response.write(data[i] + ' ', function(){
+                    response.end();
+                });
+            }
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+    } else if (request.url === '/tacos/pollo') {
+        tacoStore.getFile('tacos/pollo.json').then(data => {
+            console.log(data);
+            response.setHeader('Content-Type', 'application/json');
+            response.statusCode = 200;
+            response.write(data);
+            response.end();
+        })
+            .catch(function(err) {
+                console.log(err);
+            });
+    } else if (request.url === '/sandbox/pollo') {
+        tacoStore.removeFile('sandbox/pollo.json').then(data => {
+            console.log(data);
+            response.statusCode = 200;
+            response.write('file removed');
+            response.end();
+        })
+            .catch(function(err) {
+                console.log(err);
+            });
+
     } else {
         response.statusCode = 404;
         response.write('page not found');
-    } response.end();
+        response.end();
+    }
+    // response.end();
 
 });
 
