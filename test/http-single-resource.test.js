@@ -14,68 +14,6 @@ const testNotes = [
   { noteBody: 'Test file 3.' }
 ];
 
-describe ('NoteStore unit tests', () => {
-
-  let notesDir;
-  let noteStore;
-
-  before(() => {
-    notesDir = path.join(__dirname, '../notes');
-    if (!sander.existsSync(notesDir)) {
-      sander.mkdirSync(notesDir);
-    }
-    noteStore = new NoteStore(notesDir);
-  });
-
-  it ('store() stores test note in a file', (done) => {
-    noteStore.store('testfile1', testNotes[0])
-      .then(() => {
-        assert(true);
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-
-  it ('get() gets test note from a file', (done) => {
-    noteStore.get('testfile1')
-      .then((data) => {
-        expect(data).to.deep.equal(testNotes[0]);
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-
-
-  it ('gets an array of all notes with getAll()', (done) => {
-    Promise.all([
-      noteStore.store('testfile2', testNotes[1]),
-      noteStore.store('testfile3', testNotes[2])
-    ])
-    .then(() => {
-      return noteStore.getAll();
-    })
-    .then((arr) => {
-      let result = arr;
-      expect(result).to.deep.equal(testNotes);
-      done();
-    })
-    .catch((err) => {
-      // console.log('Got to the catch block ', err);
-      done(err);
-    });
-  });
-  
-  after((done) => {
-    sander.rimraf(notesDir)
-      .then(done);
-  });
-
-});
-
 describe ('Server integration tests', function() {
 
   let notesDir;
