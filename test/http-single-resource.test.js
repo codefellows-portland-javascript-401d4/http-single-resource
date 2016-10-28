@@ -1,5 +1,4 @@
 const expect = require('chai').expect;
-// const assert = require('chai').assert;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const path = require('path');
@@ -72,7 +71,6 @@ describe ('Server integration tests', function() {
 
   describe ('HTTP POST', () => {
 
-    // const testmessage4 = { id: 'testfile4', noteBody: 'Hello, world!' };
     it (`"/notes" with ${JSON.stringify(testNotes[3])} stores that content in the store`, (done) => {
       request
         .post('/notes')
