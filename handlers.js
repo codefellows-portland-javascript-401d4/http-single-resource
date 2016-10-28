@@ -53,27 +53,39 @@ handlers.getAll = (req, res) => {
     });
 };
 
-handlers.replace = (req, res, id) => {
-  return bodyReader(req, (err, team) => {
-    if (err) {
-      console.log('body-reader replace-handler err')
-      res.statusCode = 400;
-      res.end(err.message);
-    } else {
-      fileStore.updateFile(team, id)
-        .then(data => {
-          res.writeHead(200, {
-                'Content-Type': 'application/json' 
-          });
-          res.write(data);
-          res.end();
-        })
-        .catch(err => {
-          console.log('replace catch err');
-          res.end(err);
+handlers.put = (req, res, id) => {
+  return fileStore.readDir(fileStore.path)
+    .then(idArr => {
+      if (idArr.indexOf(id) === -1) {
+        handlers.notFound(res); 
+      } else {
+        return bodyReader(req, (err, team) => {
+          if (err) {
+            console.log('body-reader replace-handler err');
+            res.statusCode = 400;
+            res.end(err.message);
+          } else {
+            fileStore.updateFile(team, id)
+              .then(data => {
+                res.writeHead(200, {
+                  'Content-Type': 'application/json' 
+                });
+                res.write(data);
+                res.end();
+              })
+              .catch(err => {
+                console.log('replace catch err');
+                res.end(err);
+              });
+          }
         });
-    }
-  });
+      }
+    })
+    .catch(err => {
+      console.log('PUT catch error');
+      res.end(err);
+    });
+
 };
 
 // handlers.destroy = (req, res, id) => {
@@ -82,7 +94,7 @@ handlers.replace = (req, res, id) => {
 
 handlers.notFound = res => {
   res.statusCode = 404;
-  res.end('not found');
+  res.end('Resource not found.');
 };
 
 module.exports = handlers;
