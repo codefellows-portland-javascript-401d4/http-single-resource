@@ -32,15 +32,16 @@ handlers.getSingle = (req, res, id) => {
         'Content-Type': 'application/json'
       });
       res.end(team);
-    }).catch(err => {
-      console.log('GET single catch error');
-      res.end(err);
+    }).catch( () => {
+      handlers.notFound(res);
     });
 };
 
 handlers.getAll = (req, res) => {
   fileStore.readDir(fileStore.path)
-    .then(idArr => fileStore.getAll(idArr))
+    .then(idArr => {
+      fileStore.getAll(idArr);
+    })
     .then(allData => {
       res.writeHead(200, {
         'Content-Type': 'application/json' 
@@ -49,8 +50,8 @@ handlers.getAll = (req, res) => {
       res.write(JSON.stringify(allData));
       res.end();
     })
-    .catch(err => {
-      res.end(err);
+    .catch( () => {
+      handlers.notFound(res);
     });
 };
 
@@ -97,9 +98,8 @@ handlers.destroy = (req, res, id) => {
       res.write(id + ' resource was deleted.');
       res.end();
     })
-    .catch(err => {
-      console.log('destroy catch err');
-      res.end(err);
+    .catch(() => {
+      handlers.notFound(res);
     });
 };
 

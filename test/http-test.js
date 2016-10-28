@@ -74,7 +74,7 @@ describe('Our server responds to requests', done => {
       .del('/teams/1')
       .then(res => {
         assert.equal(res.statusCode, 200);
-        return fileStore.readDir('./lib/dotaTeams')
+        return fileStore.readDir('./lib/dotaTeams');
       })
       .then(arr => {
         assert.equal(arr.length, 0);
