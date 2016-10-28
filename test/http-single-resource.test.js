@@ -122,14 +122,14 @@ describe ('Server integration tests', function() {
         });
     });
 
-    // it ('removed resource is really gone', (done) => {
-    //   request
-    //     .get(`/notes/${testNotes[3].id}`)
-    //     .end((err, res) => {
-    //       expect(res).to.have.status(404);
-    //       done(err);
-    //     });
-    // });
+    it ('removed resource is really gone', (done) => {
+      request
+        .get('/notes/testfile4')
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          done();
+        });
+    });
   });
 
   after ((done) => {

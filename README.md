@@ -1,17 +1,8 @@
-# Bitmap transformer
+# HTTP single resource server with persistence
 
 ## Description
 
-TODO: Add program description.
-
-## Code Example
-
-```
-const Bitmap = require('./lib/bitmap-xfmr');
-let myBmp = new Bitmap('example-bitmap.bmp', (err) => { console.log(err || 'Done!'); });
-myBmp.transform('redder', 3);
-myBmp.writeBufferToFile('images/example-redder3.bmp', (err) => { console.log(err || 'Done writing!'); });
-```
+This HTTP server performs CRUD operations on notes.
 
 ## Motivation
 
@@ -19,37 +10,15 @@ This was written as a lab assignment for Code Fellows 401 class. Currently it su
 
 ## API Reference
 
-### Constructor
+`GET http://<hostname>/notes` returns all notes as JSON
 
-```myBmp = new Bitmap(filename, [callback(err, data)]);```
+`GET http://<hostname>/notes/:id` returns the note at a specific id as JSON
 
-Construct a new Bitmap from the data in filename.
+`POST http://<hostname>/notes` with note (as JSON) stored on the message body stores the note at its specified id. The note should be in the form { id: "idstring", noteBody: "Contents of the note." }
 
-### Transformer
+`PUT http://<hostname>/notes/:id` with content (as JSON) stored on the message body replaces the content of the note at id. The content should be in the form { noteBody: "Content to replace old content." }
 
-```myBmp.transform(label, [arguments])```
-
-Transform the bitmap where label is one of the available transforms:
- - 'redder' makes the image redder by a specified factor
- - 'bluer' makes the image bluer...
- - 'greener' makes the image greener...
- - 'invert' inverts the colors in the image (i.e. new_color = 255 - old_color)
- - 'grayscale' makes the image grayer by a specified factor
-
-Example:
-
-```
-myBmp.transform('redder', 3);
-myBmp.writeBufferToFile('images/redder3.bmp', (err) => {
-  console.log(err || 'Done!');
-});
-```
-
-### Save to file
-
-```myBmp.writeBufferToFile(filename, [callback(err, data)])```
-
-Write the Bitmap object's buffer out to a .bmp file.
+`DELETE http://<hostname>/notes/:id` removes the note at id from the server.
 
 ## Tests
 
