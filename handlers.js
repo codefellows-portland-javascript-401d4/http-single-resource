@@ -28,7 +28,7 @@ handlers.getSingle = (req, res, id) => {
   fileStore.getFile('/' + id)
     .then(team => {
       res.writeHead(200, {
-        'Content-Type': 'application/json'
+        'Content-Type': 'text/plain'
       });
       res.end(team);
     }).catch(err => {
@@ -85,12 +85,22 @@ handlers.put = (req, res, id) => {
       console.log('PUT catch error');
       res.end(err);
     });
-
 };
 
-// handlers.destroy = (req, res, id) => {
-
-// };
+handlers.destroy = (req, res, id) => {
+  fileStore.destroy(id)
+    .then( () => {
+      res.writeHead(200, {
+        'Content-Type': 'application/json' 
+      });
+      res.write(id + ' resource was deleted.');
+      res.end();
+    })
+    .catch(err => {
+      console.log('destroy catch err');
+      res.end(err);
+    });
+};
 
 handlers.notFound = res => {
   res.statusCode = 404;
