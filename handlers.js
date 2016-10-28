@@ -2,7 +2,6 @@ const fileStore = require('./lib/dotaTeam');
 const bodyReader = require('./lib/bodyReader');
 const handlers = {};
 
-
 handlers.post = (req, res) => {
   return bodyReader(req, (err, team) => {
     if(err) {
@@ -25,11 +24,20 @@ handlers.post = (req, res) => {
   });
 };
 
-// handlers.getSingle = req => {
+handlers.getSingle = (req, res, id) => {
+  fileStore.getFile('/' + id)
+    .then(team => {
+      res.writeHead(200, {
+        'Content-Type': 'application/json'
+      });
+      res.end(team);
+    }).catch(err => {
+      console.log('GET single catch error');
+      res.end(err);
+    });
+};
 
-// };
-
-handlers.getAll = req => {
+handlers.getAll = (req, res) => {
   fileStore.readDir(fileStore.path)
     .then(idArr => fileStore.getAll(idArr))
     .then(allData => {
@@ -43,6 +51,11 @@ handlers.getAll = req => {
     .catch(err => {
       res.end(err);
     });
+};
+
+handlers.notFound = res => {
+  res.statusCode = 404;
+  res.end('not found');
 };
 
 module.exports = handlers;
