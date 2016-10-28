@@ -18,5 +18,8 @@
   "homepage": "https://github.com/hpats67/http-single-resource#readme",
   "devDependencies": {
     "chai": "^3.5.0"
+  },
+  "dependencies": {
+    "sander": "^0.5.1"
   }
 }
