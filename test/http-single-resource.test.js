@@ -71,16 +71,17 @@ describe ('Server integration tests', function() {
 
   describe ('HTTP POST', () => {
 
-    it ('"/notes" with { id: "testfile4", noteBody: "Hello, world!" } stores that content in the store', (done) => {
+    const testmessage4 = { id: 'testfile4', noteBody: 'Hello, world!' };
+    it (`"/notes" with ${JSON.stringify(testmessage4)} stores that content in the store`, (done) => {
       request
         .post('/notes')
-        .send({ id: 'testfile4', noteBody: 'Hello, world!' })
+        .send(testmessage4)
         .end((err) => {
           if (err) done(err);
           request
-            .get('/notes/testfile4')
+            .get(`/notes/${testmessage4.id}`)
             .end((err, res) => {
-              expect(res.body).to.deep.equal({ noteBody: 'Hello, world!' });
+              expect(res.body).to.deep.equal(testmessage4);
               done(err);
             });
         });
