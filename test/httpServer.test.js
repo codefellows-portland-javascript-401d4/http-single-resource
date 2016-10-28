@@ -21,7 +21,7 @@ describe('http single resource promise server', () => {
 
     it('wants to see if get works', done => {
         request
-            .get('/cats/felix')
+            .get('/cats/0')
             .end((err, res) => {
                 if (err) return done(err);
                 else {
@@ -40,7 +40,7 @@ describe('http single resource promise server', () => {
                 else {
                     // console.log(res);
                     //console.log('typeof',res);
-                    assert.deepEqual(res.text.split(','), ['cats', 'felix', 'nyan', 'tardar']);
+                    assert.deepEqual(res.text.split(','), ['0.json', '1.json', '2.json']);
                     done();
                 };
             });
