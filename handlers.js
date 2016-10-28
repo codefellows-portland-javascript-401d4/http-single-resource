@@ -40,7 +40,8 @@ handlers.getSingle = (req, res, id) => {
 handlers.getAll = (req, res) => {
   fileStore.readDir(fileStore.path)
     .then(idArr => {
-      fileStore.getAll(idArr);
+      console.log('idArr in getAll: ', idArr);
+      return fileStore.getAll(idArr);
     })
     .then(allData => {
       res.writeHead(200, {
