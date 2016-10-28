@@ -9,9 +9,9 @@ const NoteStore = require('../lib/NoteStore');
 chai.use(chaiHttp);
 
 const testNotes = [
-  { noteBody: 'Test file 1.' },
-  { noteBody: 'Test file 2.' },
-  { noteBody: 'Test file 3.' }
+  { id: 'testfile1', noteBody: 'Test file 1.' },
+  { id: 'testfile2', noteBody: 'Test file 2.' },
+  { id: 'testfile3', noteBody: 'Test file 3.' }
 ];
 
 describe ('Server integration tests', function() {
@@ -29,9 +29,9 @@ describe ('Server integration tests', function() {
     noteStore = new NoteStore(notesDir);
 
     Promise.all([
-      noteStore.store('testfile1', testNotes[0]),
-      noteStore.store('testfile2', testNotes[1]),
-      noteStore.store('testfile3', testNotes[2])
+      noteStore.store(testNotes[0]),
+      noteStore.store(testNotes[1]),
+      noteStore.store(testNotes[2])
     ])
     .then(() => {
       done();
