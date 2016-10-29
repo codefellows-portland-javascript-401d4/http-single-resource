@@ -1,4 +1,4 @@
-const server = require('./httpServer');
+const server = require('./lib/httpServer');
 const port = process.env.PORT || 8999;
 
 server.listen(port, err => {
