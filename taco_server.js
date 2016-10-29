@@ -8,7 +8,7 @@ const tacoStore = new TacoStore;
 const server = http.createServer(function (request, response) {
     console.log(request.method);
 
-    if (request.url === '/tacos') {
+    if (request.url === '/tacos' && request.method === 'GET') {
         tacoStore.getList('tacos').then(data => {
             console.log(data);
             response.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -33,8 +33,8 @@ const server = http.createServer(function (request, response) {
             .catch(function(err) {
                 console.log(err);
             });
-    } else if (request.url === '/sandbox/pollo') {
-        tacoStore.removeFile('sandbox/pollo.json').then(data => {
+    } else if (request.url === '/trash/junk' && request.method === 'DELETE') {
+        tacoStore.removeFile('trash/junk.json').then(data => {
             console.log(data);
             response.statusCode = 200;
             response.write('file removed');
@@ -43,6 +43,20 @@ const server = http.createServer(function (request, response) {
             .catch(function(err) {
                 console.log(err);
             });
+
+
+    } else if (request.url === '/tacos' && request.method === 'POST') {
+        tacoStore.postFile('tacos/asada.json').then(data => {
+            console.log(data);
+            response.statusCode = 200;
+            // response.write('file removed');
+            response.end();
+        })
+            .catch(function(err) {
+                console.log(err);
+            });
+
+
 
     } else {
         response.statusCode = 404;

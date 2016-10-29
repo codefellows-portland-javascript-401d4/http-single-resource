@@ -15,6 +15,10 @@ const TacoStore = class TacoStore {
         return sander.unlink(file);
     }
 
+    postFile(file) {
+        return sander.appendFile(file);
+    }
+
 };
 
 
