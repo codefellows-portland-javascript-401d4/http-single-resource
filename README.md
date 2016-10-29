@@ -15,3 +15,11 @@ v1.0.0
 -To POST, you must send a JSON file, and direct the url to /cats otherwise it will not work and return an error
 
 -To Delete, simply point to the file you wish to delete (e.g. /cats/0);
+
+-Code Example:
+
+To talk to the server, which will be held on localhost, you need to specificy your request method, and the request url should contain what you need
+
+    -To get all cats: http://localhost:8999/cats/
+
+    -All requests must be directed to the cats API, where :id is the unique id given for each resource at the time of creation http://localhost:8999/cats/:id
