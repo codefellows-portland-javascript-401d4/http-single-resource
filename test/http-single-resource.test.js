@@ -4,7 +4,7 @@ const chaiHttp = require('chai-http');
 const path = require('path');
 const sander = require('sander');
 const test_server = require('../lib/HttpSingleResourceServer');
-const NoteStore = require('../lib/NoteStore');
+const DataStore = require('../lib/DataStore');
 chai.use(chaiHttp);
 
 const testNotes = [
@@ -17,7 +17,7 @@ const testNotes = [
 describe ('Server integration tests', function() {
 
   let notesDir;
-  let noteStore;
+  let dataStore;
   let request = chai.request(test_server);
 
   before((done) => {
@@ -26,12 +26,12 @@ describe ('Server integration tests', function() {
       sander.mkdirSync(notesDir);
     }
 
-    noteStore = new NoteStore(notesDir);
+    dataStore = new DataStore(notesDir);
 
     Promise.all([
-      noteStore.store(testNotes[0]),
-      noteStore.store(testNotes[1]),
-      noteStore.store(testNotes[2])
+      dataStore.store(testNotes[0]),
+      dataStore.store(testNotes[1]),
+      dataStore.store(testNotes[2])
     ])
     .then(() => {
       done();
