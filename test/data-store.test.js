@@ -12,15 +12,20 @@ const testNotes = [
   { id: 'testfile3', noteBody: 'Test file 3.' }
 ];
 
+const testDog = { id: 'testdog1', name: 'Cosmo', breed: 'Australian Shepard' };
+
 describe ('DataStore unit tests', () => {
 
-  let notesDir;
+  let notesDir = path.join(__dirname, '../notes');
+  let dogsDir = path.join(__dirname, '../dogs');
   let dataStore;
 
   before(() => {
-    notesDir = path.join(__dirname, '../notes');
     if (!sander.existsSync(notesDir)) {
       sander.mkdirSync(notesDir);
+    }
+    if (!sander.existsSync(dogsDir)) {
+      sander.mkdirSync(dogsDir);
     }
     dataStore = new DataStore(notesDir);
   });
@@ -65,10 +70,34 @@ describe ('DataStore unit tests', () => {
       done(err);
     });
   });
+
+  it ('stores a different type of object (dog)', (done) => {
+    dataStore.setDir(dogsDir);
+    dataStore.store(testDog)
+      .then((retval) => {
+        expect(retval).to.equal(testDog.id);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  it ('retrieves a dog from the store', (done) => {
+    dataStore.get(testDog.id)
+      .then((retobj) => {
+        expect(retobj).to.deep.equal(testDog);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
   
   after((done) => {
-    sander.rimraf(notesDir)
-      .then(done);
+    sander.rimrafSync(notesDir);
+    sander.rimrafSync(dogsDir);
+    done();
   });
 
 });

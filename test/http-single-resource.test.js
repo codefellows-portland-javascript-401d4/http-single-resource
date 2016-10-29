@@ -67,6 +67,15 @@ describe ('Server integration tests', function() {
         });
     });
 
+    it ('no resource type returns a 400 error', (done) => {
+      request
+        .get('')
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          done();
+        });
+    });
+
   });
 
   describe ('HTTP POST', () => {
@@ -125,6 +134,24 @@ describe ('Server integration tests', function() {
         .get('/notes/testfile4')
         .end((err, res) => {
           expect(res).to.have.status(404);
+          done();
+        });
+    });
+
+    it ('called without res_type and res_id returns error', (done) => {
+      request
+        .del('')
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          done();
+        });
+    });
+
+    it ('called with res_type only (no res_id) returns error', (done) => {
+      request
+        .del('/notes')
+        .end((err, res) => {
+          expect(res).to.have.status(400);
           done();
         });
     });
