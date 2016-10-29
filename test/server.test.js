@@ -28,7 +28,7 @@ describe('Single-resource http server', () => {
       '<li>new_york.json</li>' +
       '<li>san_francisco.json</li>' +
       '</ul>' +
-      'To retrieve a file, please request by the file name (no extension)';
+      'To retrieve a file, please query the file name';
 
     server
       .get('/data')
@@ -37,8 +37,20 @@ describe('Single-resource http server', () => {
         assert.equal(res.text, testHtml);
         done();
       })
-  })
+  });
 
+  it('retrieves the contents of a file', done => {
+
+    let expectedResults = '{"City":"Boston","State":"MA","Mean_1_Bdrm_Price":"$2025"}\n';
+
+    server
+      .get('/data?id=boston.json')
+      .end((err, res) => {
+        if (err) return done(err);
+        assert.equal(res.text, expectedResults);
+        done();
+      })
+  });
 
 });
 
