@@ -2,23 +2,36 @@
 
 ## Description
 
-This HTTP server performs CRUD operations on notes.
+This HTTP server performs CRUD (create/read/update/delete) operations on 
+different resource types. Resource types could be, for example, notes, 
+dogs, cats, cars, etc. The resource type is specified as the first part 
+of the URL path, and specific resources may be referred to by passing 
+them in the second part of the URL path. A resource can be any JSON object
+as long as it has the property "id" that will be used to refer to the 
+stored object for updating, retrieval, or deleting.
 
 ## Motivation
 
-This was written as a lab assignment for Code Fellows 401 class.
+This was written as a lab assignment for Code Fellows 401 class. The 
+code was refactored to generalize data storage for arbitrary object types, 
+as well as to make it more modular so it's easier to grow and maintain.
 
 ## API Reference
 
-`GET http://<hostname>/notes` returns all notes as JSON
+`GET http://<hostname>/notes` returns all notes resources as JSON objects
 
 `GET http://<hostname>/notes/:id` returns the note at a specific id as JSON
 
-`POST http://<hostname>/notes` with note (as JSON) stored on the message body stores the note at its specified id. The note should be in the form { id: "idstring", noteBody: "Contents of the note." }
+`POST http://<hostname>/cats` with a cat object (as JSON) stored on the message body stores 
+the cat object at its specified id. A cat object might be in the form 
+{ id: "cat1", name: "Garfield", breed: "Tabby" }.
 
-`PUT http://<hostname>/notes/:id` with content (as JSON) stored on the message body replaces the content of the note at id. The content should be in the form { noteBody: "Content to replace old content." }
+`PUT http://<hostname>/dog/:id` with content (as JSON) stored on the message body replaces 
+the content of the dog object at id. New content for an existing dog object 
+{ id: "dog2", name: "Shadow", breed: "Australian Shepard" } might be in the form 
+{ breed: "Flat-Coated Retriever" }.
 
-`DELETE http://<hostname>/notes/:id` removes the note at id from the server.
+`DELETE http://<hostname>/car/:id` removes the car object at id from the server.
 
 ## Tests
 
