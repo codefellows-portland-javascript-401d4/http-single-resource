@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const assert = require('chai').assert;
-// const expect = require('chai').expect;
+const expect = require('chai').expect;
 const server = require('../lib/taco_server');
 const port = 5000;
 
@@ -24,6 +24,7 @@ describe('test http server', () => {
           .end((err, response) => {
               if(err) return done(err);
               assert.deepEqual(response.text, 'carnitas.json ' + 'pollo.json ');
+              expect(response).to.have.status(200);
               done();
           });
     });
@@ -34,30 +35,43 @@ describe('test http server', () => {
           .end((err, response) => {
               if(err) return done(err);
               assert.deepEqual(response.text, '{"tortilla":"flour","filling":"chicken"}\n');
+              expect(response).to.have.status(200);
               done();
           });
     });
 
-    it('adds file', done => {
+    it('posts file', done => {
         request
-          .post('/tacos/junk')
+          .post('/tacos/pescado')
+          .send({"tortilla":"corn","filling":"fish"})
           .end((err, response) => {
               if(err) return done(err);
-              assert.deepEqual(response.text, 'file created');
+              assert.deepEqual(response.text, 'data has been posted');
+              expect(response).to.have.status(200);
               done();
           });
     });
-
 
     it('deletes file', done => {
         request
-          .delete('/tacos/junk')
+          .delete('/tacos/pescado')
           .end((err, response) => {
               if(err) return done(err);
               assert.deepEqual(response.text, 'file removed');
               done();
           });
     });
+
+    // it('adds file', done => {
+    //     request
+    //       .post('/tacos/junk')
+    //       .end((err, response) => {
+    //           if(err) return done(err);
+    //           assert.deepEqual(response.text, 'file created');
+    //           done();
+    //       });
+    // });
+
 
 
     // it('204 - no content', done => {
@@ -75,11 +89,10 @@ describe('test http server', () => {
     //         .get('/?foo=bar')
     //         .end((err, response) => {
     //             if (err) return done(err);
-    //             expect(response).to.have.status(200);
+                // expect(response).to.have.status(200);
     //             assert.deepEqual(response.text, 'foo bar!');
     //             done();
     //         });
     // });
-
 
 });
