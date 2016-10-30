@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Added additional tests.
+- Added more robust error handling for several conditions.
 
 ### Changed
 - Refactored server to call handlers for each type of request instead
