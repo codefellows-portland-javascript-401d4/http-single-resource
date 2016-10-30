@@ -25,6 +25,17 @@ describe('http single resource promise server', () => {
             });
     });
 
+    it('checks to see that we can retrieve a given cat with GET using a promise chain', () => {
+        request
+            .get('/cats/1')
+            .then(data => {
+                assert.deepEqual(data.body, {'id':'nyan','age':5,'color':'gray and poptart'});
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    });
+
     it('wants to see if we get a list of all resources', done => {
         request
             .get('/cats')
