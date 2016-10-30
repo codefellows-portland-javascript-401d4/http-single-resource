@@ -116,6 +116,23 @@ describe ('Server integration tests', function() {
         });
     });
 
+    it ('request to update an object where update data contains "id" should generate an error', (done) => {
+      request
+        .put(`/notes/${testNotes[2].id}`)
+        .send({ id: 'bogusid', noteBody: 'This is bad content.' })
+        .end((err, res) => {
+          // if (err) done(err);
+          expect(res).to.have.status(400);
+          request
+            .get(`/notes/${testNotes[2].id}`)
+            .end((err, res) => {
+              if (err) done(err);
+              expect(res.body).to.deep.equal({ id: 'testfile3', noteBody: 'This is new content.' });
+              done();
+            });
+        });
+    });
+
   });
 
   describe ('HTTP DELETE', () => {

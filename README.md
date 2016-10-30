@@ -24,12 +24,14 @@ as well as to make it more modular so it's easier to grow and maintain.
 
 `POST http://<hostname>/cats` with a cat object (as JSON) stored on the message body stores 
 the cat object at its specified id. A cat object might be in the form 
-{ id: "cat1", name: "Garfield", breed: "Tabby" }.
+{ id: "cat1", name: "Garfield", breed: "Tabby" }. In this case "id" needs to be specified
+in the object since we're creating new storage for it.
 
 `PUT http://<hostname>/dog/:id` with content (as JSON) stored on the message body replaces 
 the content of the dog object at id. New content for an existing dog object 
 { id: "dog2", name: "Shadow", breed: "Australian Shepard" } might be in the form 
-{ breed: "Flat-Coated Retriever" }.
+{ breed: "Flat-Coated Retriever" }. The only restriction is the PUT data should not contain
+"id" since that's specified in the request - we're updating data, not changing the id.
 
 `DELETE http://<hostname>/car/:id` removes the car object at id from the server.
 
