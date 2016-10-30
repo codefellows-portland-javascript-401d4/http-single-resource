@@ -2,8 +2,6 @@ const chai      = require('chai');
 const chaiHttp  = require('chai-http');
 const assert    = chai.assert;
 const server    = require('../lib/httpServer');
-const fs        = require('fs');
-const sander    = require('sander');
 chai.use(chaiHttp);
 
 describe('http single resource promise server', () => {
