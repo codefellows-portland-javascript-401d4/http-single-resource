@@ -1,0 +1,25 @@
+{
+  "name": "http-single-resource",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hpats67/http-single-resource.git"
+  },
+  "author": "@hpats67",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hpats67/http-single-resource/issues"
+  },
+  "homepage": "https://github.com/hpats67/http-single-resource#readme",
+  "devDependencies": {
+    "chai": "^3.5.0"
+  },
+  "dependencies": {
+    "sander": "^0.5.1"
+  }
+}
