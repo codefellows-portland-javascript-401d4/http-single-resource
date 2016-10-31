@@ -9,8 +9,8 @@ const httpserver = require('../lib/http-server');
 describe('Single-resource http server', () => {
 
   before(done => {
-    // if the san diego file is still around, remove it. ditch the error if it's not around.
-    sander.unlink('/home/driel/projects/CodeFellows401/lab_assignments/class08-http-single-resource/data/san_diego.json')
+    // if the portland file is still around, remove it. ditch the error if it's not around.
+    sander.unlink('/home/driel/projects/CodeFellows401/lab_assignments/class08-http-single-resource/data/portland.json')
       .then(done)
       .catch((err) => {
         done();
@@ -123,6 +123,45 @@ describe('Single-resource http server', () => {
         done();
       })
   });
+
+
+  xit('writes a file using the PUT method', done => {
+
+    const expectedResults = 'File portland.json saved.';
+
+    server
+      .put('/data/portland.json')
+      .set('application', 'json')
+      .send({"City":"Portland","State":"OR","Median_1_BR_price":"$1,000","Median_2_BR_price":"$2,000"})
+      .end((err, res) => {
+        if (err) return done(err);
+        console.log('in the callback, err res', err, res);
+        assert.equal(res.text, expectedResults);
+        done();
+      })
+  });
+
+  xit('retrieves all files in the data folder by name', done => {
+
+    const testHtml = '<h2>The data store contains the following files: </h2><ul>\n\n' +
+      '<li>boston.json</li>' +
+      '<li>los_angeles.json</li>' +
+      '<li>miami.json</li>' +
+      '<li>new_york.json</li>' +
+      '<li>portland.json</li>' +
+      '<li>san_francisco.json</li>' +
+      '</ul>' +
+      'To retrieve a file, please query the file name';
+
+    server
+      .get('/data')
+      .end((err, res) => {
+        if (err) return done(err);
+        assert.equal(res.text, testHtml);
+        done();
+      })
+  });
+
 
 });
 
