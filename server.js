@@ -7,6 +7,6 @@ server.listen(port, err => {
   if (err) {
     console.error('Server error: ', err);
   } else {
-    console.log('HTPP Server listening on port ', port)
+    console.log('HTPP Server listening on port ', port);
   }
 });
