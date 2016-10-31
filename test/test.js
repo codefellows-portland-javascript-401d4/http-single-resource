@@ -14,11 +14,11 @@ describe('server', () => {
     });
 });
 
-describe('test http server', () => {
+describe('Test http single resource', () => {
 
     let request = chai.request(server);
 
-    it('sends back response text, list of resources in directory', done => {
+    it('GET request to /tacos, where resources are stored - server writes response text, a list of resources in the directory', done => {
         request
           .get('/tacos')
           .end((err, response) => {
@@ -29,7 +29,7 @@ describe('test http server', () => {
           });
     });
 
-    it('sends back response text, contents of file', done => {
+    it('GET request for resource at /tacos/pollo - server writes response text, which is the contents of the resource', done => {
         request
           .get('/tacos/pollo')
           .end((err, response) => {
@@ -40,7 +40,7 @@ describe('test http server', () => {
           });
     });
 
-    it('posts file', done => {
+    it('POST request to /tacos/pescado - server writes response text and creates a new resource, whose contents are the parsed body of the request', done => {
         request
           .post('/tacos/pescado')
           .send({"tortilla":"corn","filling":"fish"})
@@ -52,7 +52,19 @@ describe('test http server', () => {
           });
     });
 
-    it('deletes file', done => {
+    it('PUT request to tacos/pescado - server writes response text and creates a new resource (if not already existing) or updates an existing resouce. The updated contents of the resource are the parsed body of the request', done => {
+        request
+          .put('/tacos/pescado')
+          .send({"tortilla":"corn","filling":"fish","salsa":"tomatillo","cheese":"cotija"})
+          .end((err, response) => {
+              if(err) return done(err);
+              assert.deepEqual(response.text, 'data has been updated');
+              expect(response).to.have.status(200);
+              done();
+          });
+    });
+
+    it('DELETE request to tacos/pescado - server writes response text and deletes resource', done => {
         request
           .delete('/tacos/pescado')
           .end((err, response) => {
@@ -61,38 +73,4 @@ describe('test http server', () => {
               done();
           });
     });
-
-    // it('adds file', done => {
-    //     request
-    //       .post('/tacos/junk')
-    //       .end((err, response) => {
-    //           if(err) return done(err);
-    //           assert.deepEqual(response.text, 'file created');
-    //           done();
-    //       });
-    // });
-
-
-
-    // it('204 - no content', done => {
-    //     request
-    //       .get('/noContent')
-    //       .end((err, response) => {
-    //           if(err) return done(err);
-    //           expect(response).to.have.status(204);
-    //           done();
-    //       });
-    // });
-    //
-    // it('query - ?foo=bar', done => {
-    //     request
-    //         .get('/?foo=bar')
-    //         .end((err, response) => {
-    //             if (err) return done(err);
-                // expect(response).to.have.status(200);
-    //             assert.deepEqual(response.text, 'foo bar!');
-    //             done();
-    //         });
-    // });
-
 });
