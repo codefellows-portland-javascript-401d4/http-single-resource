@@ -52,7 +52,7 @@ describe('Test http single resource', () => {
           });
     });
 
-    it('PUT request to tacos/pescado - server writes response text and creates a new resource (if not already existing) or updates an existing resouce. The updated contents of the resource are the parsed body of the request', done => {
+    it('PUT request to tacos/pescado - server writes response text and creates a new resource (if not already existing) or updates an existing resource. The updated contents of the resource are the parsed body of the request', done => {
         request
           .put('/tacos/pescado')
           .send({"tortilla":"corn","filling":"fish","salsa":"tomatillo","cheese":"cotija"})
