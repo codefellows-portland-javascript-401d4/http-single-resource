@@ -11,10 +11,10 @@ describe('Single-resource http server', () => {
   before(done => {
     // if the san diego file is still around, remove it. ditch the error if it's not around.
     sander.unlink('/home/driel/projects/CodeFellows401/lab_assignments/class08-http-single-resource/data/san_diego.json')
+      .then(done)
       .catch((err) => {
         done();
       });
-    done();
   });
 
   let server = chai.request(httpserver);
@@ -62,6 +62,7 @@ describe('Single-resource http server', () => {
       })
   });
 
+
   it('writes post data to a file', done => {
 
     const expectedResults = 'File san_diego.json saved.';
@@ -103,6 +104,19 @@ describe('Single-resource http server', () => {
 
     server
       .get('/data?id=san_diego.json')
+      .end((err, res) => {
+        if (err) return done(err);
+        assert.equal(res.text, expectedResults);
+        done();
+      })
+  });
+
+  it('deletes the san_diego.json file', done => {
+
+    const expectedResults = 'san_diego.json deleted successfully.';
+
+    server
+      .del('/data?id=san_diego')
       .end((err, res) => {
         if (err) return done(err);
         assert.equal(res.text, expectedResults);
