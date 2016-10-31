@@ -1,8 +1,8 @@
-    {
-    "id": 2,
+{
     "name": "Gaius Octavius",
+    "series": "Codex Alera",
     "type": "Crafter",
     "location": "Alera",
     "Occupation": "First Lord",
     "NbrBooks": 5
-    }
+}
