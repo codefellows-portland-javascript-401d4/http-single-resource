@@ -13,7 +13,8 @@ describe('Single-resource http server', () => {
     sander.unlink('/home/driel/projects/CodeFellows401/lab_assignments/class08-http-single-resource/data/san_diego.json')
       .catch((err) => {
         done();
-      })
+      });
+    done();
   });
 
   let server = chai.request(httpserver);
@@ -92,6 +93,19 @@ describe('Single-resource http server', () => {
       .end((err, res) => {
         if (err) return done(err);
         assert.equal(res.text, testHtml);
+        done();
+      })
+  });
+
+  it('retrieves the contents of a file added using POST method', done => {
+
+    const expectedResults = '{"City":"San Diego","State":"CA","Median_1_BR_price":"$1,500","Median_2_BR_price":"$2,100"}';
+
+    server
+      .get('/data?id=san_diego.json')
+      .end((err, res) => {
+        if (err) return done(err);
+        assert.equal(res.text, expectedResults);
         done();
       })
   });
