@@ -2,9 +2,11 @@
   "name": "http-single-resource",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./test/http-test.js",
   "scripts": {
-    "test": "mocha"
+    "test": "npm run test:run",
+    "test:run": "mocha",
+    "test:watch": "npm run test:run -- -w"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,9 @@
   },
   "homepage": "https://github.com/hpats67/http-single-resource#readme",
   "devDependencies": {
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.1.2"
   },
   "dependencies": {
     "sander": "^0.5.1"
