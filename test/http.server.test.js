@@ -28,11 +28,46 @@ describe('test http server resource', () => {
 
     it('request for resource in /teams', done => {
         request
-          .get('/teams/seahawks')
+        //   .get('/teams/seahawks')
+          .get('/teams/broncos')
           .end((err, response) => {
               if(err) return done(err);
-              assert.deepEqual(response.text, '{"city":"seattle","conference":"nfc"}\n');
+              assert.deepEqual(response.text, '{"city":"denver","conference":"afc"}');
               expect(response).to.have.status(200);
+              done();
+          });
+    });
+
+        it('POST request to /teams/bears', done => {
+        request
+          .post('/teams/bears')
+          .send({"city":"chicago","conference":"nfc"})
+          .end((err, response) => {
+              if(err) return done(err);
+              assert.deepEqual(response.text, 'data has been written');
+              expect(response).to.have.status(200);
+              done();
+          });
+    });
+
+    it('PUT request to teams/bears', done => {
+        request
+          .put('/teams/bears')
+          .send({"division":"north"})
+          .end((err, response) => {
+              if(err) return done(err);
+              assert.deepEqual(response.text, 'data has been updated');
+              expect(response).to.have.status(200);
+              done();
+          });
+    });
+
+    it('DELETE request to teams/bears, deletes the resource', done => {
+        request
+          .delete('/teams/bears')
+          .end((err, response) => {
+              if(err) return done(err);
+              assert.deepEqual(response.text, 'file has been removed');
               done();
           });
     });
