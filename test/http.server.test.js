@@ -14,5 +14,14 @@ describe('server', () => {
 
 describe('test http server', () => {
     let request = chai.request(server);
-    
+
+    it('sends back a response text', done => {
+        request
+            .get('/')
+            .end((err, response) => {
+                if(err) return done(err);
+                assert.deepEqual(response.text, )
+            })
+    })
+
 })
