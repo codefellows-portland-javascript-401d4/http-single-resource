@@ -24,8 +24,6 @@
     "chai-http": "^3.0.0"
   },
   "dependencies": {
-    "chai-http": "^3.0.0",
-    "sander": "^0.5.1",
-    "superagent": "^2.3.0"
+    "sander": "^0.5.1"
   }
 }
