@@ -38,16 +38,27 @@ describe('test http server resource', () => {
           });
     });
 
-        it('POST request to /teams/bears', done => {
+        it('POST request to /teams/bears', (done) => {
         request
           .post('/teams/bears')
           .send({"city":"chicago","conference":"nfc"})
-          .end((err, response) => {
-              if(err) return done(err);
-              assert.deepEqual(response.text, 'data has been written');
-              expect(response).to.have.status(200);
-              done();
-          });
+        //   .end((err, response) => {
+        //       if(err) return done(err);
+        //       assert.deepEqual(response.text, 'data has been written');
+        //       expect(response).to.have.status(200);
+        //       done();
+        //   })
+        //   .catch(err => {
+        //       done(err);
+        //   });
+            .then(response => {
+                assert.deepEqual(response.text, 'data has been written');
+                done();
+            })
+            .catch(err => {
+                console.log('POST err')
+                done(err);
+            })
     });
 
     it('PUT request to teams/bears', done => {
