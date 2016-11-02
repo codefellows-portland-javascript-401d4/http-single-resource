@@ -1,0 +1,33 @@
+{
+  "name": "http-single-resource",
+  "version": "1.0.0",
+  "description": "http-single-resource",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "npm run lint",
+    "test": "npm run test:run",
+    "test:run": "mocha",
+    "test:watch": "npm run test:run -- -w",
+    "lint": "eslint .",
+    "start": "npm run test && node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DrewStock/http-single-resource.git"
+  },
+  "author": "@DrewStock",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DrewStock/http-single-resource/issues"
+  },
+  "homepage": "https://github.com/DrewStock/http-single-resource#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.8.1",
+    "mocha": "^3.1.2"
+  },
+  "dependencies": {
+    "sander": "^0.5.1"
+  }
+}
