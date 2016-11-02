@@ -53,7 +53,6 @@ describe('test http server resource', () => {
         //   });
             .then(response => {
                 assert.deepEqual(response.text, 'data has been written');
-                setTimeout(done, 15000);
                 done();
             })
             .catch(err => {
