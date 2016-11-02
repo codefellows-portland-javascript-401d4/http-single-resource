@@ -20,7 +20,7 @@ describe('test http server resource', () => {
             .get('/teams')
             .end((err, response) => {
                 if(err) return done(err);
-                assert.deepEqual(response.text, 'bears.json' + 'broncos.json ' + 'seahawks.json ');
+                assert.deepEqual(response.text, 'broncos.json ' + 'seahawks.json ');
                 expect(response).to.have.status(200);
                 done();
             });
