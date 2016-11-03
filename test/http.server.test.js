@@ -64,7 +64,7 @@ describe('test http server resource', () => {
     it('PUT request to teams/bears', done => {
         request
           .put('/teams/bears')
-          .send({"division":"north"})
+          .send({"city":"chicago","conference":"nfc","division":"north"})
           .end((err, response) => {
               if(err) return done(err);
               assert.deepEqual(response.text, 'data has been updated');
