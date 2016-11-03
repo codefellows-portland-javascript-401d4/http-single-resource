@@ -7,4 +7,4 @@ server.listen(port, err => {
     } else {
         console.log('http server listening on port', port);
     }
-})
+});
