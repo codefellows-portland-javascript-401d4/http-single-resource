@@ -7,6 +7,11 @@
   - This is a Code Fellows Lab Assignment to create an http server that uses the file system for persistent storage and retrieval - it is a faux database for notes
   - The http server runs on localhost:8080
 
+  - server.js acts as a server & router
+  - dataStore.js accesses the the file system
+  - readBody.js asynchronously builds the requestbody from the chunked database
+  - resHandler.js writes the response and errors back to the user 
+
   - User will be able to read the directory of the notes, read specific notes, create new notes, update existing notes and delete notes dependent on specific path and request method
   - The dataStore.js module implements the file system methods
     - dataStore.retrieveDir implements GET requests for the /notes directory
@@ -20,15 +25,18 @@
 
 ### How To Use Codebase
   - This module uses Node, npm and the following modules:
-    - net module from node, sander, http, url
-    - eslint, mocha, chai for testing
+    - net module from node, sander, http, path
+    - eslint, mocha, chai, chai-http for testing
   - Make sure to run npm install from the directory root to install dependencies
   - Please refer to the package.json for more info
   
   - A notes directory currently exists in the root of the project directory
-  - It includes two test json files that can be used for testing or deleted if wished, they do not affect the functionality of the app
+  - The notes directory includes test1.json & test2.json files
+    - These files do not affect the functionality of the app
+    - They must be in the notes directory when starting the tests.
+    - See the testing section for more details
 
-  - To use this module as it stands, from the command line at the root of the directory type:
+  - To use this module as it stands, from the command line at the root of the project directory type:
     ```
     $ npm start
     ``` 
@@ -52,10 +60,39 @@
 
   - sending a PUT request to localhost:8080/notes/<specific_note>.json with the note in JSON in the body overwrites the note in the file directory if it exists, creates it if it doesn't exist and displays 'Your file has been updated'
 
+  - NOTE: PUT & POST both overwrite files if they already exist
+
   - sending a DELETE request to localhost:8080/notes/<specific_note>.json deletes the note from the file directory and displays 'Your file has been deleted'
 
   - navigating to other localhost:8080/<something_else> console.logs a 404 status code and displays 'there is no path at /<something_else> please check your map'
   
+
+### Testing
+  - Set Up
+    - To run the test suite, from the command line at the root of the project directory type:
+      ```
+      $ mocha
+      ```
+    - you will see 2 unit tests & 7 E2E tests
+
+    - As stated above, both test1.json & test2.json must be in /notes folder to run tests
+    - Feel free to delete for normal usage
+    - If you need to remake the test files:
+      - test1.json
+        ```
+        {
+          "title": "test1.json",
+          "text": "Dinner is consistent, the chicken comes out golden every time"
+        }
+        ```
+
+      - test2.json
+        ```
+        {
+          "title": "test2.json",
+          "text": ""
+        }
+        ```
 
 ### Code Shape
   - This code has been vetted using Eslint and was reviewed by Code Fellows using Travis-CI

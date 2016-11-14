@@ -1,6 +1,6 @@
 {
   "name": "http-single-server",
-  "version": "1.0.0",
+  "version": "1.2.2",
   "description": "http single-server api",
   "main": "index.js",
   "directories": {
@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "test": "mocha",
     "test:watch": "npm run test -- -w",
-    "start": "nodemon lib/server.js"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -29,11 +29,9 @@
     "eslint": "^3.8.1",
     "mocha": "^3.1.2",
     "nodemon": "^1.11.0",
-    "rimraf": "^2.5.4",
     "superagent": "^2.3.0"
   },
   "dependencies": {
-    "figlet": "^1.2.0",
     "sander": "^0.5.1"
   }
 }
