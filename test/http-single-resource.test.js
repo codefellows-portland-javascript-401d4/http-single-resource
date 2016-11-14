@@ -4,7 +4,7 @@ const chaiHttp = require('chai-http');
 const path = require('path');
 const sander = require('sander');
 const test_server = require('../lib/HttpSingleResourceServer');
-const NoteStore = require('../lib/NoteStore');
+const DataStore = require('../lib/DataStore');
 chai.use(chaiHttp);
 
 const testNotes = [
@@ -17,7 +17,7 @@ const testNotes = [
 describe ('Server integration tests', function() {
 
   let notesDir;
-  let noteStore;
+  let dataStore;
   let request = chai.request(test_server);
 
   before((done) => {
@@ -26,12 +26,12 @@ describe ('Server integration tests', function() {
       sander.mkdirSync(notesDir);
     }
 
-    noteStore = new NoteStore(notesDir);
+    dataStore = new DataStore(notesDir);
 
     Promise.all([
-      noteStore.store(testNotes[0]),
-      noteStore.store(testNotes[1]),
-      noteStore.store(testNotes[2])
+      dataStore.store(testNotes[0]),
+      dataStore.store(testNotes[1]),
+      dataStore.store(testNotes[2])
     ])
     .then(() => {
       done();
@@ -63,6 +63,15 @@ describe ('Server integration tests', function() {
         .get('/invalidpath')
         .end((err, res) => {
           expect(res).to.have.status(404);
+          done();
+        });
+    });
+
+    it ('no resource type returns a 400 error', (done) => {
+      request
+        .get('')
+        .end((err, res) => {
+          expect(res).to.have.status(400);
           done();
         });
     });
@@ -107,6 +116,23 @@ describe ('Server integration tests', function() {
         });
     });
 
+    it ('request to update an object where update data contains "id" should generate an error', (done) => {
+      request
+        .put(`/notes/${testNotes[2].id}`)
+        .send({ id: 'bogusid', noteBody: 'This is bad content.' })
+        .end((err, res) => {
+          // if (err) done(err);
+          expect(res).to.have.status(400);
+          request
+            .get(`/notes/${testNotes[2].id}`)
+            .end((err, res) => {
+              if (err) done(err);
+              expect(res.body).to.deep.equal({ id: 'testfile3', noteBody: 'This is new content.' });
+              done();
+            });
+        });
+    });
+
   });
 
   describe ('HTTP DELETE', () => {
@@ -125,6 +151,24 @@ describe ('Server integration tests', function() {
         .get('/notes/testfile4')
         .end((err, res) => {
           expect(res).to.have.status(404);
+          done();
+        });
+    });
+
+    it ('called without res_type and res_id returns error', (done) => {
+      request
+        .del('')
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          done();
+        });
+    });
+
+    it ('called with res_type only (no res_id) returns error', (done) => {
+      request
+        .del('/notes')
+        .end((err, res) => {
+          expect(res).to.have.status(400);
           done();
         });
     });

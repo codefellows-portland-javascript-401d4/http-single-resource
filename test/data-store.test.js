@@ -3,7 +3,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const path = require('path');
 const sander = require('sander');
-const NoteStore = require('../lib/NoteStore');
+const DataStore = require('../lib/DataStore');
 chai.use(chaiHttp);
 
 const testNotes = [
@@ -12,21 +12,26 @@ const testNotes = [
   { id: 'testfile3', noteBody: 'Test file 3.' }
 ];
 
-describe ('NoteStore unit tests', () => {
+const testDog = { id: 'testdog1', name: 'Cosmo', breed: 'Australian Shepard' };
 
-  let notesDir;
-  let noteStore;
+describe ('DataStore unit tests', () => {
+
+  let notesDir = path.join(__dirname, '../notes');
+  let dogsDir = path.join(__dirname, '../dogs');
+  let dataStore;
 
   before(() => {
-    notesDir = path.join(__dirname, '../notes');
     if (!sander.existsSync(notesDir)) {
       sander.mkdirSync(notesDir);
     }
-    noteStore = new NoteStore(notesDir);
+    if (!sander.existsSync(dogsDir)) {
+      sander.mkdirSync(dogsDir);
+    }
+    dataStore = new DataStore(notesDir);
   });
 
   it ('store() stores test note in a file', (done) => {
-    noteStore.store(testNotes[0])
+    dataStore.store(testNotes[0])
       .then((retval) => {
         expect(retval).to.equal(testNotes[0].id);
         done();
@@ -37,7 +42,7 @@ describe ('NoteStore unit tests', () => {
   });
 
   it ('get() gets test note from a file', (done) => {
-    noteStore.get('testfile1')
+    dataStore.get('testfile1')
       .then((data) => {
         expect(data).to.deep.equal(testNotes[0]);
         done();
@@ -50,11 +55,11 @@ describe ('NoteStore unit tests', () => {
 
   it ('gets an array of all notes with getAll()', (done) => {
     Promise.all([
-      noteStore.store(testNotes[1]),
-      noteStore.store(testNotes[2])
+      dataStore.store(testNotes[1]),
+      dataStore.store(testNotes[2])
     ])
     .then(() => {
-      return noteStore.getAll();
+      return dataStore.getAll();
     })
     .then((arr) => {
       let result = arr;
@@ -65,10 +70,34 @@ describe ('NoteStore unit tests', () => {
       done(err);
     });
   });
+
+  it ('stores a different type of object (dog)', (done) => {
+    dataStore.setDir(dogsDir);
+    dataStore.store(testDog)
+      .then((retval) => {
+        expect(retval).to.equal(testDog.id);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  it ('retrieves a dog from the store', (done) => {
+    dataStore.get(testDog.id)
+      .then((retobj) => {
+        expect(retobj).to.deep.equal(testDog);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
   
   after((done) => {
-    sander.rimraf(notesDir)
-      .then(done);
+    sander.rimrafSync(notesDir);
+    sander.rimrafSync(dogsDir);
+    done();
   });
 
 });
