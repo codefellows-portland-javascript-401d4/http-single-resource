@@ -1,6 +1,12 @@
-###HTTP Page Single Resource Getter with Promises!
+#HTTP Page Single Resource Getter with Promises!
 
 -I promise this will work!
+
+###Author
+
+Chris Bruner and Niilo Smeds
+
+###Version
 
 v1.0.0
 
@@ -15,3 +21,24 @@ v1.0.0
 -To POST, you must send a JSON file, and direct the url to /cats otherwise it will not work and return an error
 
 -To Delete, simply point to the file you wish to delete (e.g. /cats/0);
+
+To talk to the server, which will be held on localhost, you need to specificy your request method, and the request url should contain what you need
+
+    -To get all cats: http://localhost:8999/cats/
+
+    -All requests must be directed to the cats API, where :id is the unique id given for each resource at the time of creation http://localhost:8999/cats/:id
+
+-Code Example of a GET request using SuperAgent on ECMA 6:
+
+```javascript
+
+const request = require('superagent');
+
+request
+    .get('http://localhost:8999/0')
+    .end((err,data) => {
+        if (err) return err;
+        else console.log(data);
+    })
+
+```

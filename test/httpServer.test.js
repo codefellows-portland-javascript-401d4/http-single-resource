@@ -1,10 +1,8 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
+const chai      = require('chai');
+const chaiHttp  = require('chai-http');
+const assert    = chai.assert;
+const server    = require('../lib/httpServer');
 chai.use(chaiHttp);
-const assert = chai.assert;
-const server = require('../lib/httpServer');
-const fs = require('fs');
-const sander = require('sander');
 
 describe('http single resource promise server', () => {
     
@@ -15,7 +13,7 @@ describe('http single resource promise server', () => {
         server.listen({port, port}, done);
     });
 
-    it('checks to see that we can retrieve a given cat', done => {
+    it('checks to see that we can retrieve a given cat with GET', done => {
         request
             .get('/cats/1')
             .end((err, res) => {
@@ -24,6 +22,17 @@ describe('http single resource promise server', () => {
                     assert.deepEqual(res.body, {'id':'nyan','age':5,'color':'gray and poptart'});
                     done();
                 };
+            });
+    });
+
+    it('checks to see that we can retrieve a given cat with GET using a promise chain', () => {
+        request
+            .get('/cats/1')
+            .then(data => {
+                assert.deepEqual(data.body, {'id':'nyan','age':5,'color':'gray and poptart'});
+            })
+            .catch(err => {
+                console.log(err);
             });
     });
 
