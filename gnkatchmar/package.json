@@ -1,0 +1,30 @@
+{
+  "name": "http-single-resource",
+  "version": "1.0.0",
+  "description": "Code Fellows Assignment 2016-10-27",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "npm run lint",
+    "test": "npm run test:run",
+    "test:run": "mocha",
+    "test:watch": "npm run test:run -- -w",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gnkatchmar/http-single-resource.git"
+  },
+  "author": "Gregory Katchmar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gnkatchmar/http-single-resource/issues"
+  },
+  "homepage": "https://github.com/gnkatchmar/http-single-resource#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.8.1",
+    "mocha": "^3.1.2",
+    "sander": "^0.5.1"
+  }
+}
