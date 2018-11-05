@@ -1,0 +1,30 @@
+{
+  "name": "single-resource-http-server",
+  "version": "0.1.0",
+  "description": "A http server which accepts only JSON resources, backed by a persistent data store. RESTful and generally CRUDdy.",
+  "main": "server.js",
+  "scripts": {
+    "pretest": "eslint *.js",
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GloriaAnholt/http-single-resource.git"
+  },
+  "author": "Gloria Anholt",
+  "license": "CC-BY-NC-4.0",
+  "bugs": {
+    "url": "git+https://github.com/GloriaAnholt/http-single-resource/issues"
+  },
+  "homepage": "https://github.com/GloriaAnholt/http-single-resource#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.9.0",
+    "mocha": "^3.1.2"
+  },
+  "dependencies": {
+    "sander": "^0.5.1"
+  }
+}
