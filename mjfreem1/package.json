@@ -1,0 +1,34 @@
+{
+  "name": "http-single-resource",
+  "version": "1.0.0",
+  "description": "",
+  "main": "httpServer.js",
+  "dependencies": {
+    "sander": "^0.5.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.9.0",
+    "mkdirp": "^0.5.1",
+    "mocha": "^3.1.2",
+    "rimraf": "^2.5.4"
+  },
+  "scripts": {
+    "lint": "eslint **/*.js",
+    "pretest": "npm run lint",
+    "test": "mocha",
+    "watch": "npm run test -- -w",
+    "start": "node ./runServer.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mjfreem1/http-single-resource.git"
+  },
+  "author": "mjfreem1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mjfreem1/http-single-resource/issues"
+  },
+  "homepage": "https://github.com/mjfreem1/http-single-resource#readme"
+}
